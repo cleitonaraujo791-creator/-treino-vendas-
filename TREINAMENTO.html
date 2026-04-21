@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Treino Fitness PRO</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  margin: 50px auto;
+  width: 450px;
+  border-radius: 10px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+#explicacao {
+  margin-top: 15px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Simulação: Produto Fitness</h2>
+
+<h3>Cliente diz:</h3>
+<p id="pergunta">Clique em começar</p>
+
+<button onclick="responder(0)"></button>
+<button onclick="responder(1)"></button>
+<button onclick="responder(2)"></button>
+
+<p id="resultado"></p>
+<p id="explicacao"></p>
+
+<button onclick="novo()">Próximo cliente</button>
+
+</div>
+
+<<script>
+
+// =======================
+// 1. DADOS (cenários)
+// =======================
+const cenarios = [
+
+{
+pergunta: "Já tentei várias vezes e não consegui manter...",
+opcoes: [
+"Entendo. O que normalmente acontece quando você tenta manter?",
+"Entendo. Em que momento você percebe que começa a parar?",
+"Entendo. O que costuma te fazer desistir no meio do processo?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Boa, mas ampla demais.",
+"⚠️ Boa, mas mais superficial.",
+"✅ Melhor. Vai direto na causa da desistência."
+]
+},
+
+{
+pergunta: "Não tenho disciplina pra isso...",
+opcoes: [
+"Entendo. Em quais momentos você sente mais dificuldade?",
+"Entendo. O que mais atrapalha sua rotina hoje?",
+"Entendo. Quando você percebe que perde o ritmo?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Identifica pontos críticos.",
+"⚠️ Boa, mas muito ampla.",
+"⚠️ Boa, mas menos específica."
+]
+},
+
+{
+pergunta: "Tenho medo de não ter resultado...",
+opcoes: [
+"Entendo. O que você considera um resultado pra você?",
+"Entendo. Como você saberia que está funcionando?",
+"Entendo. O que faria você sentir que valeu a pena?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Define expectativa clara.",
+"⚠️ Boa, mas mais racional.",
+"⚠️ Boa, mas mais emocional."
+]
+},
+
+{
+pergunta: "Não sei se isso funciona pra mim...",
+opcoes: [
+"Entendo. O que você acha que precisa ser diferente agora?",
+"Entendo. O que você já tentou até hoje?",
+"Entendo. O que você sente que não funcionou antes?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Leva o cliente pro futuro (solução).",
+"⚠️ Foca no passado.",
+"⚠️ Ainda preso no problema."
+]
+},
+
+{
+pergunta: "Tá caro pra mim agora...",
+opcoes: [
+"Entendo. Comparado a quê você sente isso?",
+"Entendo. O que você levou em conta pra achar isso?",
+"Entendo. O que faria esse valor fazer sentido?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Descobre referência de preço.",
+"⚠️ Boa, mas vaga.",
+"⚠️ Boa, mas abstrata."
+]
+},
+
+{
+pergunta: "Não tenho tempo...",
+opcoes: [
+"Entendi. Quanto tempo você conseguiria hoje?",
+"Entendi. Em qual momento do dia seria possível encaixar?",
+"Entendi. Qual horário seria mais viável pra você?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Vai direto pra ação.",
+"⚠️ Boa, mas menos direta.",
+"⚠️ Boa, mas depende do contexto."
+]
+},
+
+{
+pergunta: "Tenho vergonha de começar...",
+opcoes: [
+"Entendo. O que mais te incomoda nisso?",
+"Entendo. Em quais situações isso pesa mais?",
+"Entendo. O que você sente que te trava hoje?"
+],
+correta: 0,
+explicacoes: [
+"✅ Melhor. Vai direto na emoção central.",
+"⚠️ Boa, mas situacional.",
+"⚠️ Boa, mas genérica."
+]
+},
+
+{
+pergunta: "Já tentei academia e não gostei...",
+opcoes: [
+"Entendo. O que você não gostou na experiência?",
+"Entendo. O que fez você não continuar?",
+"Entendo. O que te desanimou naquele processo?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Boa, mas superficial.",
+"⚠️ Boa, mas ampla.",
+"✅ Melhor. Explora emoção + causa."
+]
+},
+
+{
+pergunta: "Não vejo resultado nunca...",
+opcoes: [
+"Entendo. O que você tentou até agora?",
+"Entendo. Em quanto tempo você esperava resultado?",
+"Entendo. O que você considera resultado hoje?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Foca no passado.",
+"⚠️ Foca em tempo.",
+"✅ Melhor. Define expectativa."
+]
+},
+
+{
+pergunta: "Meu metabolismo é lento...",
+opcoes: [
+"Entendo. O que você já tentou pra lidar com isso?",
+"Entendo. O que você sente que não funciona no seu caso?",
+"Entendo. O que você acredita que dificulta mais pra você?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Boa, mas básica.",
+"⚠️ Ainda preso no problema.",
+"✅ Melhor. Faz o cliente refletir mais profundo."
+]
+},
+
+{
+pergunta: "Sempre começo e paro...",
+opcoes: [
+"Entendo. O que acontece quando você perde o ritmo?",
+"Entendo. Em que momento você percebe que começa a parar?",
+"Entendo. O que costuma te fazer sair do processo?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Boa, mas ampla.",
+"⚠️ Boa, mas mais superficial.",
+"✅ Melhor. Vai direto na causa."
+]
+},
+
+{
+pergunta: "Não sei se vou conseguir...",
+opcoes: [
+"Entendo. O que faz você sentir isso?",
+"Entendo. Em que parte você acha mais difícil?",
+"Entendo. O que te faria sentir mais seguro?"
+],
+correta: 2,
+explicacoes: [
+"⚠️ Boa, mas emocional.",
+"⚠️ Boa, mas limitada.",
+"✅ Melhor. Move pra solução."
+]
+}
+
+];
+// =======================
+// 2. CONTROLE
+// =======================
+let ordem = [];
+let indice = 0;
+
+// =======================
+// 3. FUNÇÕES
+// =======================
+
+// embaralhar
+function embaralhar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// iniciar
+function iniciar() {
+  ordem = [...cenarios];
+  embaralhar(ordem);
+  indice = 0;
+  mostrar();
+}
+
+// mostrar pergunta
+function mostrar() {
+  let atual = ordem[indice];
+
+  document.getElementById("pergunta").innerText = atual.pergunta;
+
+  let botoes = document.querySelectorAll("button");
+
+  botoes[0].innerText = atual.opcoes[0];
+  botoes[1].innerText = atual.opcoes[1];
+  botoes[2].innerText = atual.opcoes[2];
+
+  document.getElementById("resultado").innerText = "";
+  document.getElementById("explicacao").innerText = "";
+}
+
+// responder
+function responder(opcao) {
+  let atual = ordem[indice];
+
+  if (opcao === atual.correta) {
+    document.getElementById("resultado").innerText = "✅ Resposta avançada";
+  } else {
+    document.getElementById("resultado").innerText = "❌ Resposta comum";
+  }
+
+  document.getElementById("explicacao").innerText = atual.explicacoes[opcao];
+}
+
+// próxima pergunta
+function novo() {
+  indice++;
+
+  if (indice >= ordem.length) {
+    alert("Você terminou! Reiniciando...");
+    iniciar();
+    return;
+  }
+
+  mostrar();
+}
+
+// =======================
+// 4. INICIAR
+// =======================
+iniciar();
+
+</script>
+
+</body>
+</html>
