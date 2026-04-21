@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Venda no TikTok Todos os Dias</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            margin: 20px auto;
+            width: 350px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #111;
+        }
+
+        button {
+            background: green;
+            color: white;
+            padding: 15px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Você pode fazer sua primeira venda no TikTok ainda hoje</h1>
+
+        <p>Mesmo começando do zero e sem aparecer.</p>
+
+        <hr>
+
+        <h3>O problema</h3>
+        <p>Você posta, posta… e ninguém compra.</p>
+
+        <h3>A solução</h3>
+        <p>Existe um método simples que transforma vídeos comuns em vendas todos os dias.</p>
+
+        <h3>O que você vai aprender:</h3>
+        <p>✔ Como escolher produtos que vendem</p>
+        <p>✔ Como fazer vídeos que geram desejo</p>
+        <p>✔ Como vender mesmo com poucos seguidores</p>
+
+        <hr>
+
+        <h2>De R$ 97 por apenas R$ 19</h2>
+
+        <button onclick="comprar()">Quero começar agora</button>
+
+    </div>
+
+    <script>
+        function comprar() {
+            alert("Simulação de compra realizada 🚀");
+        }
+    </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+
+</html>
